@@ -71,12 +71,15 @@ typedef enum ssd1306_color {
 typedef struct ssd1306 {
     I2C_HandleTypeDef* i2c_handle;
     uint8_t* buffer;
+
+    bool inverted;
 } ssd1306_t;
 
 bool ssd1306_init(ssd1306_t* screen, I2C_HandleTypeDef* handle);
 void ssd1306_command(ssd1306_t* screen, uint8_t command);
 
 void ssd1306_set_contrast(ssd1306_t* screen, uint8_t contrast);
+void ssd1306_set_inverted(ssd1306_t* screen, bool inverted);
 
 void ssd1306_draw(ssd1306_t* screen);
 void ssd1306_fill(ssd1306_t* screen, ssd1306_color_t color);

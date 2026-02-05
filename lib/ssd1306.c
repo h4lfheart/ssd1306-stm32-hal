@@ -18,7 +18,8 @@ void ssd1306_init_commands(ssd1306_t* screen) {
     ssd1306_set_contrast(screen, 0xFF);
 
     ssd1306_command(screen, SSD1306_OP_SEGMENT_REMAP_MODE);
-    ssd1306_command(screen, SSD1306_OP_DISPLAY_NORMAL_MODE); // TODO extract to invert set function
+
+    ssd1306_set_inverted(screen, false);
 
     ssd1306_command(screen, SSD1306_OP_SET_MULTIPLEX);
         ssd1306_command(screen, SSD1306_HEIGHT - 1); // set multiplex ratio to max screen height
@@ -80,6 +81,12 @@ void ssd1306_command(ssd1306_t* screen, uint8_t command) {
 void ssd1306_set_contrast(ssd1306_t* screen, uint8_t contrast) {
     ssd1306_command(screen, SSD1306_OP_SET_CONTRAST);
     ssd1306_command(screen, contrast);
+}
+
+void ssd1306_set_inverted(ssd1306_t* screen, bool inverted) {
+    screen->inverted = inverted;
+
+    ssd1306_command(screen, inverted ? SSD1306_OP_DISPLAY_INVERTED_MODE : SSD1306_OP_DISPLAY_NORMAL_MODE);
 }
 
 void ssd1306_draw(ssd1306_t* screen) {
