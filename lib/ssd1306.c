@@ -1,5 +1,7 @@
 #include "ssd1306.h"
 
+#include <stdio.h>
+
 void ssd1306_command(ssd1306_t* screen, uint8_t command) {
     HAL_I2C_Mem_Write(
             screen->i2c_handle,
@@ -206,7 +208,7 @@ void ssd1306_draw_text_cursor(ssd1306_t* screen, const ssd1306_font_t* font, con
     }
 }
 
-void ssd1306_set_text_cursor(ssd1306_t* screen, const ssd1306_font_t* font, const uint8_t x, const uint8_t y) {
+void ssd1306_set_text_cursor(ssd1306_t* screen, const uint8_t x, const uint8_t y) {
     screen->cursor_x = x;
     screen->cursor_y = y;
 }
@@ -250,6 +252,12 @@ void ssd1306_draw_text_aligned(ssd1306_t* screen, const ssd1306_font_t* font, co
     }
 }
 
+void ssd1306_draw_text_double(ssd1306_t* screen, const ssd1306_font_t* font, const char* text, double value, uint8_t x, uint8_t y)
+{
+    char buf[32];
+    snprintf(buf, 32, "%s%.3f", text, value);
+    ssd1306_draw_text(screen, font, buf, x, y);
+}
 
 void ssd1306_set_line_offset(ssd1306_t* screen, uint8_t offset)
 {

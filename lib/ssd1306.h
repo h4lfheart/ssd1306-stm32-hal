@@ -104,11 +104,13 @@ void ssd1306_draw_bitmap(ssd1306_t* screen, const uint8_t bitmap[], uint8_t x, u
 
 uint8_t ssd1306_measure_text(const ssd1306_font_t* font, const char* text);
 void ssd1306_draw_text_cursor(ssd1306_t* screen, const ssd1306_font_t* font, const char* text);
-void ssd1306_set_text_cursor(ssd1306_t* screen, const ssd1306_font_t* font, uint8_t x, uint8_t y);
+void ssd1306_set_text_cursor(ssd1306_t* screen, uint8_t x, uint8_t y);
 
 void ssd1306_draw_text(ssd1306_t* screen, const ssd1306_font_t* font, const char* text, uint8_t x, uint8_t y);
 void ssd1306_draw_char(ssd1306_t* screen, const ssd1306_font_t* font, char character, uint8_t x, uint8_t y);
 void ssd1306_draw_text_aligned(ssd1306_t* screen, const ssd1306_font_t* font, const char* text, uint8_t y, ssd1306_text_align_t align);
+
+void ssd1306_draw_text_double(ssd1306_t* screen, const ssd1306_font_t* font, const char* text, double value, uint8_t x, uint8_t y);
 
 // screen controls
 void ssd1306_set_contrast(ssd1306_t* screen, uint8_t contrast);
