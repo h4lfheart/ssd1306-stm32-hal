@@ -117,3 +117,8 @@ void ssd1306_set_contrast(ssd1306_t* screen, uint8_t contrast);
 void ssd1306_set_line_offset(ssd1306_t* screen, uint8_t offset);
 void ssd1306_set_horizontal_mirror(ssd1306_t* screen, bool mirror);
 void ssd1306_set_vertical_mirror(ssd1306_t* screen, bool mirror);
+
+// shapes
+void ssd1306_draw_line(ssd1306_t* screen, int16_t x0, int16_t y0, int16_t x1, int16_t y1);
+void ssd1306_draw_rect(ssd1306_t* screen, int16_t x, int16_t y, int16_t width, int16_t height);
+void ssd1306_draw_circle(ssd1306_t* screen, int16_t x0, int16_t y0, int16_t radius);

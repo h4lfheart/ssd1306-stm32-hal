@@ -277,3 +277,72 @@ void ssd1306_set_vertical_mirror(ssd1306_t* screen, bool mirror)
     ssd1306_command(screen, mirror ? SSD1306_OP_COM_NORMAL_MODE : SSD1306_OP_COM_REMAP_MODE);
 }
 
+void ssd1306_draw_line(ssd1306_t* screen, int16_t x0, int16_t y0, int16_t x1, int16_t y1)
+{
+    /* https://en.wikipedia.org/wiki/Bresenham%27s_line_algorithm */
+    const int16_t dx = abs(x1 - x0);
+    const int16_t dy = abs(y1 - y0);
+
+    int16_t step_x = (x0 < x1) ? 1 : -1;
+    int16_t step_y = (y0 < y1) ? 1 : -1;
+    int16_t error = dx - dy;
+
+    while (true)
+    {
+        ssd1306_set_pixel(screen, x0, y0, WHITE);
+
+        if (x0 == x1 && y0 == y1) // line finished
+            break;
+
+        int16_t d = 2 * error;
+
+        if (d > -dy)
+        {
+            error -= dy;
+            x0 += step_x;
+        }
+
+        if (d < dx)
+        {
+            error += dx;
+            y0 += step_y;
+        }
+    }
+}
+
+void ssd1306_draw_rect(ssd1306_t* screen, int16_t x, int16_t y, int16_t width, int16_t height)
+{
+    ssd1306_draw_line(screen, x, y, x + width - 1, y);
+    ssd1306_draw_line(screen, x, y + height - 1, x + width - 1, y + height - 1);
+    ssd1306_draw_line(screen, x, y, x, y + height - 1);
+    ssd1306_draw_line(screen, x + width - 1, y, x + width - 1, y + height - 1);
+}
+
+void ssd1306_draw_circle(ssd1306_t* screen, int16_t x0, int16_t y0, int16_t radius)
+{
+    /* https://www.geeksforgeeks.org/c/bresenhams-circle-drawing-algorithm/ */
+    int16_t x = 0;
+    int16_t y = radius;
+    int16_t d = 1 - radius;
+
+    while (x <= y)
+    {
+        ssd1306_set_pixel(screen, (uint8_t)(x0 + x), (uint8_t)(y0 + y), WHITE);
+        ssd1306_set_pixel(screen, (uint8_t)(x0 - x), (uint8_t)(y0 + y), WHITE);
+        ssd1306_set_pixel(screen, (uint8_t)(x0 + x), (uint8_t)(y0 - y), WHITE);
+        ssd1306_set_pixel(screen, (uint8_t)(x0 - x), (uint8_t)(y0 - y), WHITE);
+
+        ssd1306_set_pixel(screen, (uint8_t)(x0 + y), (uint8_t)(y0 + x), WHITE);
+        ssd1306_set_pixel(screen, (uint8_t)(x0 - y), (uint8_t)(y0 + x), WHITE);
+        ssd1306_set_pixel(screen, (uint8_t)(x0 + y), (uint8_t)(y0 - x), WHITE);
+        ssd1306_set_pixel(screen, (uint8_t)(x0 - y), (uint8_t)(y0 - x), WHITE);
+
+        if (d < 0) {
+            d += 2 * x + 3;
+        } else {
+            d += 2 * (x - y) + 5;
+            y--;
+        }
+        x++;
+    }
+}
